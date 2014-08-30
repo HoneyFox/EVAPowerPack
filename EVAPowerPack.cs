@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace EVAPowerPack
 {
-	[KSPAddon(KSPAddon.Startup.Instantly, false)]
+	[KSPAddon(KSPAddon.Startup.MainMenu, false)]
 	public class EVAPowerPack : MonoBehaviour
 	{
 		public static EVAPowerPack s_Singleton = null;
@@ -14,7 +14,7 @@ namespace EVAPowerPack
 		public Vessel lastEVA = null;
 		public bool powerPackEnabled = false;
 
-		public void OnAwake()
+		public void Awake()
 		{
 			if(s_Singleton == null)
 			{
