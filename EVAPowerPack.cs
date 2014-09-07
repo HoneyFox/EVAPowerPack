@@ -10,9 +10,11 @@ namespace EVAPowerPack
 	public class EVAPowerPack : MonoBehaviour
 	{
 		public static EVAPowerPack s_Singleton = null;
+		public static KSP.IO.PluginConfiguration s_Config = null;
 
 		public Vessel lastEVA = null;
 		public bool powerPackEnabled = false;
+		public float jetpackThrust = 3.0f;
 
 		public void Awake()
 		{
@@ -20,6 +22,25 @@ namespace EVAPowerPack
 			{
 				s_Singleton = this;
 				DontDestroyOnLoad(s_Singleton);
+			}
+
+			this.LoadSettings();
+		}
+
+		public void LoadSettings()
+		{
+			try
+			{
+				s_Config = KSP.IO.PluginConfiguration.CreateForType<EVAPowerPack>();
+				s_Config.load();
+
+				Debug.Log("EVAPowerPack Settings Loaded.");
+
+				jetpackThrust = s_Config.GetValue<float>("Thrust");
+			}
+			catch (Exception e)
+			{
+				//	Debug.Log("Failed to Load EngineIgnitor Settings: " + e.Message);
 			}
 		}
 
@@ -83,7 +104,7 @@ namespace EVAPowerPack
 							Debug.Log("rotPower: " + evaModule.rotPower.ToString());
 
 							if (powerPackEnabled)
-								evaModule.linPower = 3.0f;
+								evaModule.linPower = jetpackThrust;
 							else
 								evaModule.linPower = 0.3f;
 						}
